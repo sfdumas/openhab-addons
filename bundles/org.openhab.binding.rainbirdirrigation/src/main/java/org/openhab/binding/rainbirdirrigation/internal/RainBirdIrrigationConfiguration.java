@@ -15,17 +15,18 @@ package org.openhab.binding.rainbirdirrigation.internal;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
- * The {@link rainbirdirrigationConfiguration} class contains fields mapping thing configuration parameters.
+ * The {@link RainBirdIrrigationConfiguration} class contains fields mapping thing configuration parameters.
  *
  * @author Stephen Dumas - Initial contribution
  */
 @NonNullByDefault
-public class rainbirdirrigationConfiguration {
+public class RainBirdIrrigationConfiguration {
 
     /**
      * Sample configuration parameters. Replace with your own.
      */
     public String hostname = "";
+    public String username = "";
     public String password = "";
     public int refreshInterval = 600;
 }

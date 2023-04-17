@@ -16,13 +16,13 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.core.thing.ThingTypeUID;
 
 /**
- * The {@link rainbirdirrigationBindingConstants} class defines common constants, which are
+ * The {@link RainBirdIrrigationBindingConstants} class defines common constants, which are
  * used across the whole binding.
  *
  * @author Stephen Dumas - Initial contribution
  */
 @NonNullByDefault
-public class rainbirdirrigationBindingConstants {
+public class RainBirdIrrigationBindingConstants {
 
     private static final String BINDING_ID = "rainbirdirrigation";
 

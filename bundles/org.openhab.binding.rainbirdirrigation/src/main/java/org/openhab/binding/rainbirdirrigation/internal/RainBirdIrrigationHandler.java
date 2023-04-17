@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.rainbirdirrigation.internal;
 
-import static org.openhab.binding.rainbirdirrigation.internal.rainbirdirrigationBindingConstants.*;
+import static org.openhab.binding.rainbirdirrigation.internal.RainBirdIrrigationBindingConstants.CHANNEL_1;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -26,19 +26,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The {@link rainbirdirrigationHandler} is responsible for handling commands, which are
+ * The {@link RainBirdIrrigationHandler} is responsible for handling commands, which are
  * sent to one of the channels.
  *
  * @author Stephen Dumas - Initial contribution
  */
 @NonNullByDefault
-public class rainbirdirrigationHandler extends BaseThingHandler {
+public class RainBirdIrrigationHandler extends BaseThingHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(rainbirdirrigationHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(RainBirdIrrigationHandler.class);
 
-    private @Nullable rainbirdirrigationConfiguration config;
+    private @Nullable RainBirdIrrigationConfiguration config;
 
-    public rainbirdirrigationHandler(Thing thing) {
+    public RainBirdIrrigationHandler(Thing thing) {
         super(thing);
     }
 
@@ -60,7 +60,7 @@ public class rainbirdirrigationHandler extends BaseThingHandler {
 
     @Override
     public void initialize() {
-        config = getConfigAs(rainbirdirrigationConfiguration.class);
+        config = getConfigAs(RainBirdIrrigationConfiguration.class);
 
         // TODO: Initialize the handler.
         // The framework requires you to return from this method quickly, i.e. any network access must be done in
@@ -79,6 +79,7 @@ public class rainbirdirrigationHandler extends BaseThingHandler {
         // Example for background initialization:
         scheduler.execute(() -> {
             boolean thingReachable = true; // <background task with long running initialization here>
+
             // when done do:
             if (thingReachable) {
                 updateStatus(ThingStatus.ONLINE);

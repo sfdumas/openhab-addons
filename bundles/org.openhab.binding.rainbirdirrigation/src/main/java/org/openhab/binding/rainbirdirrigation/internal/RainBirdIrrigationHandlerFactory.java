@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.rainbirdirrigation.internal;
 
-import static org.openhab.binding.rainbirdirrigation.internal.rainbirdirrigationBindingConstants.*;
+import static org.openhab.binding.rainbirdirrigation.internal.RainBirdIrrigationBindingConstants.THING_TYPE_SAMPLE;
 
 import java.util.Set;
 
@@ -26,14 +26,14 @@ import org.openhab.core.thing.binding.ThingHandlerFactory;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The {@link rainbirdirrigationHandlerFactory} is responsible for creating things and thing
+ * The {@link RainBirdIrrigationHandlerFactory} is responsible for creating things and thing
  * handlers.
  *
  * @author Stephen Dumas - Initial contribution
  */
 @NonNullByDefault
 @Component(configurationPid = "binding.rainbirdirrigation", service = ThingHandlerFactory.class)
-public class rainbirdirrigationHandlerFactory extends BaseThingHandlerFactory {
+public class RainBirdIrrigationHandlerFactory extends BaseThingHandlerFactory {
 
     private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Set.of(THING_TYPE_SAMPLE);
 
@@ -47,7 +47,7 @@ public class rainbirdirrigationHandlerFactory extends BaseThingHandlerFactory {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
         if (THING_TYPE_SAMPLE.equals(thingTypeUID)) {
-            return new rainbirdirrigationHandler(thing);
+            return new RainBirdIrrigationHandler(thing);
         }
 
         return null;

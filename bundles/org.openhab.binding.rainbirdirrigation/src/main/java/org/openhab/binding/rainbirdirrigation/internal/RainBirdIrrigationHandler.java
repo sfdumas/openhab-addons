@@ -16,6 +16,8 @@ import static org.openhab.binding.rainbirdirrigation.internal.RainBirdIrrigation
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jetty.client.HttpClient;
+import org.openhab.binding.rainbirdirrigation.internal.service.RainBirdService;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingStatus;
@@ -38,8 +40,11 @@ public class RainBirdIrrigationHandler extends BaseThingHandler {
 
     private @Nullable RainBirdIrrigationConfiguration config;
 
-    public RainBirdIrrigationHandler(Thing thing) {
+    private final HttpClient httpClient;
+
+    public RainBirdIrrigationHandler(Thing thing, HttpClient httpClient) {
         super(thing);
+        this.httpClient = httpClient;
     }
 
     @Override
@@ -80,6 +85,7 @@ public class RainBirdIrrigationHandler extends BaseThingHandler {
         scheduler.execute(() -> {
             boolean thingReachable = true; // <background task with long running initialization here>
 
+            RainBirdService rainBirdService = new RainBirdService(config, httpClient);
             // when done do:
             if (thingReachable) {
                 updateStatus(ThingStatus.ONLINE);

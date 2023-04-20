@@ -12,11 +12,11 @@
  */
 package org.openhab.binding.denonmarantz.internal.discovery;
 
-import static org.openhab.binding.denonmarantz.internal.DenonMarantzBindingConstants.*;
+import static org.openhab.binding.denonmarantz.internal.DenonMarantzBindingConstants.PARAMETER_HOST;
+import static org.openhab.binding.denonmarantz.internal.DenonMarantzBindingConstants.THING_TYPE_AVR;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +34,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * DenonMarantzDiscoveryParticipant searches for Receivers that match Denon or Marantz serial numbers.
+ *
+ * @author Stephen Dumas - Code Refactoring and reduction
  * @author Jan-Willem Veldhuis - Initial contribution
  *
  */
@@ -76,64 +79,45 @@ public class DenonMarantzDiscoveryParticipant implements MDNSDiscoveryParticipan
 
     @Override
     public DiscoveryResult createResult(ServiceInfo serviceInfo) {
-        String qualifiedName = serviceInfo.getQualifiedName();
-        logger.debug("AVR found: {}", qualifiedName);
-        ThingUID thingUID = getThingUID(serviceInfo);
-        if (thingUID != null) {
-            Matcher matcher = DENON_MARANTZ_PATTERN.matcher(qualifiedName);
-            matcher.matches(); // we already know it matches, it was matched in getThingUID
-            String serial = matcher.group(1).toLowerCase();
 
-            /**
-             * The Vendor is not available from the mDNS result.
-             * We assign the Vendor based on our assumptions of the MAC address prefix.
-             */
-            String vendor = "";
-            if (serial.startsWith(MARANTZ_MAC_PREFIX)) {
-                vendor = "Marantz";
-            } else if (serial.startsWith(DENON_MAC_PREFIX)) {
-                vendor = "Denon";
-            }
-
-            // 'am=...' property describes the model name
-            String model = serviceInfo.getPropertyString("am");
-            String friendlyName = matcher.group(2).trim();
-
-            Map<String, Object> properties = new HashMap<>(2);
-
-            if (serviceInfo.getHostAddresses().length == 0) {
-                logger.debug("Could not determine IP address for the Denon/Marantz AVR");
-                return null;
-            }
-            String host = serviceInfo.getHostAddresses()[0];
-
-            logger.debug("IP Address: {}", host);
-
-            properties.put(PARAMETER_HOST, host);
-            properties.put(Thing.PROPERTY_SERIAL_NUMBER, serial);
-            properties.put(Thing.PROPERTY_VENDOR, vendor);
-            properties.put(Thing.PROPERTY_MODEL_ID, model);
-
-            String label = friendlyName + " (" + vendor + ' ' + model + ")";
-            DiscoveryResult result = DiscoveryResultBuilder.create(thingUID).withProperties(properties).withLabel(label)
+        return Optional.ofNullable(getThingUID(serviceInfo)).map(uid -> {
+            Matcher matcher = DENON_MARANTZ_PATTERN.matcher(serviceInfo.getQualifiedName());
+            matcher.matches();
+            return DiscoveryResultBuilder.create(uid)
+                    .withLabel(buildLabel(matcher, serviceInfo.getPropertyString("am")))
+                    .withProperty(PARAMETER_HOST, serviceInfo.getHostAddresses()[0])
+                    .withProperty(Thing.PROPERTY_SERIAL_NUMBER, matcher.group(1).toLowerCase())
+                    .withProperty(Thing.PROPERTY_VENDOR, getVendorByMacPrefix(matcher.group(1).trim()))
+                    .withProperty(Thing.PROPERTY_MODEL_ID, serviceInfo.getPropertyString("am"))
                     .withRepresentationProperty(Thing.PROPERTY_SERIAL_NUMBER).build();
-            return result;
-
-        } else {
-            return null;
-        }
+        }).orElse(null);
     }
 
     @Override
     public ThingUID getThingUID(ServiceInfo service) {
         Matcher matcher = DENON_MARANTZ_PATTERN.matcher(service.getQualifiedName());
+
         if (matcher.matches()) {
-            logger.debug("This seems like a supported Denon/Marantz AVR!");
-            String serial = matcher.group(1).toLowerCase();
-            return new ThingUID(THING_TYPE_AVR, serial);
+            logger.debug("{} seems like a supported Denon/Marantz AVR.", service.getQualifiedName());
+            return new ThingUID(THING_TYPE_AVR, matcher.group(1).toLowerCase());
+
         } else {
-            logger.trace("This discovered device is not supported by the DenonMarantz binding, ignoring..");
+            logger.trace("This discovered device {} is not supported by the DenonMarantz binding, ignoring..",
+                    service.getQualifiedName());
         }
         return null;
+    }
+
+    private String getVendorByMacPrefix(String serial) {
+        if (serial.startsWith(MARANTZ_MAC_PREFIX)) {
+            return "Marantz";
+        } else if (serial.startsWith(DENON_MAC_PREFIX)) {
+            return "Denon";
+        }
+        return null;
+    }
+
+    private String buildLabel(Matcher matcher, String name) {
+        return matcher.group(2).trim() + " (" + name + ")";
     }
 }

@@ -22,7 +22,7 @@ import org.openhab.binding.denonmarantz.internal.connector.telnet.DenonMarantzTe
 
 /**
  * Returns the connector based on the configuration.
- * Currently there are 2 types: HTTP and Telnet
+ * Currently, there are 2 types: HTTP and Telnet
  *
  * @author Jan-Willem Veldhuis - Initial contribution
  */

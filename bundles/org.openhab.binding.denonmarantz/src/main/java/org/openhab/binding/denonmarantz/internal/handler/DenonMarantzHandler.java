@@ -197,7 +197,7 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
     }
 
     /**
-     * Try to auto configure the connection type (Telnet or HTTP) for unmanaged Things.
+     * Try to autoconfigure the connection type (Telnet or HTTP) for unmanaged Things.
      */
     private void autoConfigure() throws InterruptedException {
         /*

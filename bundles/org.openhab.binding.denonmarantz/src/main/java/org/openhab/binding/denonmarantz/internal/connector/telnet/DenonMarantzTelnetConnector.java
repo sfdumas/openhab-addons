@@ -20,9 +20,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Pattern;
 
-import org.openhab.binding.denonmarantz.internal.DenonMarantzState;
 import org.openhab.binding.denonmarantz.internal.config.DenonMarantzConfiguration;
 import org.openhab.binding.denonmarantz.internal.connector.DenonMarantzConnector;
+import org.openhab.binding.denonmarantz.internal.state.DenonMarantzState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

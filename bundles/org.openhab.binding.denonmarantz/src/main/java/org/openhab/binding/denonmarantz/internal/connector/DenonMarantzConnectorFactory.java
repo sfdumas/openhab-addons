@@ -15,20 +15,21 @@ package org.openhab.binding.denonmarantz.internal.connector;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.eclipse.jetty.client.HttpClient;
-import org.openhab.binding.denonmarantz.internal.DenonMarantzState;
 import org.openhab.binding.denonmarantz.internal.config.DenonMarantzConfiguration;
 import org.openhab.binding.denonmarantz.internal.connector.http.DenonMarantzHttpConnector;
 import org.openhab.binding.denonmarantz.internal.connector.telnet.DenonMarantzTelnetConnector;
+import org.openhab.binding.denonmarantz.internal.state.DenonMarantzState;
 
 /**
  * Returns the connector based on the configuration.
  * Currently, there are 2 types: HTTP and Telnet
  *
+ * @author Stephen Dumas - Made getConnector() static
  * @author Jan-Willem Veldhuis - Initial contribution
  */
 public class DenonMarantzConnectorFactory {
 
-    public DenonMarantzConnector getConnector(DenonMarantzConfiguration config, DenonMarantzState state,
+    public static DenonMarantzConnector getConnector(DenonMarantzConfiguration config, DenonMarantzState state,
             ScheduledExecutorService scheduler, HttpClient httpClient, String thingUID) {
         if (config.isTelnet()) {
             return new DenonMarantzTelnetConnector(config, state, scheduler, thingUID);

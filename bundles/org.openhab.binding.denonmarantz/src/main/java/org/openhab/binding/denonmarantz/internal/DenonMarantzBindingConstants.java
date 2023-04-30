@@ -21,9 +21,10 @@ import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.type.ChannelTypeUID;
 
 /**
- * The {@link DenonMarantzBinding} class defines common constants, which are
+ * The {@link DenonMarantzBindingConstants} class defines common constants, which are
  * used across the whole binding.
  *
+ * @author Stephen Dumas - Simplified Channels
  * @author Jan-Willem Veldhuis - Initial contribution
  */
 public class DenonMarantzBindingConstants {
@@ -73,35 +74,61 @@ public class DenonMarantzBindingConstants {
     public static final String CHANNEL_ZONE4_MUTE = "zone4#mute";
     public static final String CHANNEL_ZONE4_INPUT = "zone4#input";
 
-    // Map of Zone2 Channel Type UIDs (to be added to Thing later when needed)
-    public static final Map<String, ChannelTypeUID> ZONE2_CHANNEL_TYPES = new LinkedHashMap<>();
+    public static final String CHANNEL_DIVIDER = "#";
+    public static final String SYSTEM_ZONE = "general";
+    public static final String MAIN_ZONE = "mainZone";
+    public static final String GENERIC_ZONE = "zone";
+
+    public static final String POWER = "power";
+    public static final String VOLUME = "volume";
+    public static final String VOLUME_DB = "volumeDB";
+    public static final String MUTE = "mute";
+    public static final String INPUT = "input";
+
+    public static final String GENERIC_ZONE_CHANNEL_POWER = GENERIC_ZONE + "?" + CHANNEL_DIVIDER + POWER;
+    public static final String GENERIC_ZONE_CHANNEL_VOLUME = GENERIC_ZONE + "?" + CHANNEL_DIVIDER + VOLUME;
+    public static final String GENERIC_ZONE_CHANNEL_VOLUME_DB = GENERIC_ZONE + "?" + CHANNEL_DIVIDER + VOLUME_DB;
+    public static final String GENERIC_ZONE_CHANNEL_MUTE = GENERIC_ZONE + "?" + CHANNEL_DIVIDER + MUTE;
+    public static final String GENERIC_ZONE_CHANNEL_INPUT = GENERIC_ZONE + "?" + CHANNEL_DIVIDER + INPUT;
+
+    public static final Map<String, ChannelTypeUID> ZONE_CHANNEL_TYPES = new LinkedHashMap<>();
     static {
-        ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_POWER, new ChannelTypeUID(BINDING_ID, "zonePower"));
-        ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_VOLUME, new ChannelTypeUID(BINDING_ID, "volume"));
-        ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_VOLUME_DB, new ChannelTypeUID(BINDING_ID, "volumeDB"));
-        ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_MUTE, new ChannelTypeUID(BINDING_ID, "mute"));
-        ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_INPUT, new ChannelTypeUID(BINDING_ID, "input"));
+        ZONE_CHANNEL_TYPES.put(GENERIC_ZONE_CHANNEL_POWER, new ChannelTypeUID(BINDING_ID, "zonePower"));
+        ZONE_CHANNEL_TYPES.put(GENERIC_ZONE_CHANNEL_VOLUME, new ChannelTypeUID(BINDING_ID, "volume"));
+        ZONE_CHANNEL_TYPES.put(GENERIC_ZONE_CHANNEL_VOLUME_DB, new ChannelTypeUID(BINDING_ID, "volumeDB"));
+        ZONE_CHANNEL_TYPES.put(GENERIC_ZONE_CHANNEL_MUTE, new ChannelTypeUID(BINDING_ID, "mute"));
+        ZONE_CHANNEL_TYPES.put(GENERIC_ZONE_CHANNEL_INPUT, new ChannelTypeUID(BINDING_ID, "input"));
     }
+
+    // Map of Zone2 Channel Type UIDs (to be added to Thing later when needed)
+    // public static final Map<String, ChannelTypeUID> ZONE2_CHANNEL_TYPES = new LinkedHashMap<>();
+    // static {
+    // ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_POWER, new ChannelTypeUID(BINDING_ID, "zonePower"));
+    // ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_VOLUME, new ChannelTypeUID(BINDING_ID, "volume"));
+    // ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_VOLUME_DB, new ChannelTypeUID(BINDING_ID, "volumeDB"));
+    // ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_MUTE, new ChannelTypeUID(BINDING_ID, "mute"));
+    // ZONE2_CHANNEL_TYPES.put(CHANNEL_ZONE2_INPUT, new ChannelTypeUID(BINDING_ID, "input"));
+    // }
 
     // Map of Zone3 Channel Type UIDs (to be added to Thing later when needed)
-    public static final Map<String, ChannelTypeUID> ZONE3_CHANNEL_TYPES = new LinkedHashMap<>();
-    static {
-        ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_POWER, new ChannelTypeUID(BINDING_ID, "zonePower"));
-        ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_VOLUME, new ChannelTypeUID(BINDING_ID, "volume"));
-        ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_VOLUME_DB, new ChannelTypeUID(BINDING_ID, "volumeDB"));
-        ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_MUTE, new ChannelTypeUID(BINDING_ID, "mute"));
-        ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_INPUT, new ChannelTypeUID(BINDING_ID, "input"));
-    }
+    // public static final Map<String, ChannelTypeUID> ZONE3_CHANNEL_TYPES = new LinkedHashMap<>();
+    // static {
+    // ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_POWER, new ChannelTypeUID(BINDING_ID, "zonePower"));
+    // ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_VOLUME, new ChannelTypeUID(BINDING_ID, "volume"));
+    // ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_VOLUME_DB, new ChannelTypeUID(BINDING_ID, "volumeDB"));
+    // ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_MUTE, new ChannelTypeUID(BINDING_ID, "mute"));
+    // ZONE3_CHANNEL_TYPES.put(CHANNEL_ZONE3_INPUT, new ChannelTypeUID(BINDING_ID, "input"));
+    // }
 
     // Map of Zone4 Channel Type UIDs (to be added to Thing later when needed)
-    public static final Map<String, ChannelTypeUID> ZONE4_CHANNEL_TYPES = new LinkedHashMap<>();
-    static {
-        ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_POWER, new ChannelTypeUID(BINDING_ID, "zonePower"));
-        ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_VOLUME, new ChannelTypeUID(BINDING_ID, "volume"));
-        ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_VOLUME_DB, new ChannelTypeUID(BINDING_ID, "volumeDB"));
-        ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_MUTE, new ChannelTypeUID(BINDING_ID, "mute"));
-        ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_INPUT, new ChannelTypeUID(BINDING_ID, "input"));
-    }
+    // public static final Map<String, ChannelTypeUID> ZONE4_CHANNEL_TYPES = new LinkedHashMap<>();
+    // static {
+    // ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_POWER, new ChannelTypeUID(BINDING_ID, "zonePower"));
+    // ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_VOLUME, new ChannelTypeUID(BINDING_ID, "volume"));
+    // ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_VOLUME_DB, new ChannelTypeUID(BINDING_ID, "volumeDB"));
+    // ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_MUTE, new ChannelTypeUID(BINDING_ID, "mute"));
+    // ZONE4_CHANNEL_TYPES.put(CHANNEL_ZONE4_INPUT, new ChannelTypeUID(BINDING_ID, "input"));
+    // }
 
     /**
      * Static mapping of ChannelType-to-ItemType (workaround while waiting for

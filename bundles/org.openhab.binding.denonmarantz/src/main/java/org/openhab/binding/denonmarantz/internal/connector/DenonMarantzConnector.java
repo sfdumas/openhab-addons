@@ -18,9 +18,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.openhab.binding.denonmarantz.internal.DenonMarantzState;
 import org.openhab.binding.denonmarantz.internal.UnsupportedCommandTypeException;
 import org.openhab.binding.denonmarantz.internal.config.DenonMarantzConfiguration;
+import org.openhab.binding.denonmarantz.internal.state.DenonMarantzState;
 import org.openhab.core.library.types.DecimalType;
 import org.openhab.core.library.types.IncreaseDecreaseType;
 import org.openhab.core.library.types.OnOffType;

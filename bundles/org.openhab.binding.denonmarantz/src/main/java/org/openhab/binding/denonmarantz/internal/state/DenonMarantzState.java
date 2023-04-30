@@ -10,14 +10,19 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.denonmarantz.internal;
+package org.openhab.binding.denonmarantz.internal.state;
 
 import java.math.BigDecimal;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.openhab.binding.denonmarantz.internal.DenonMarantzBindingConstants;
+import org.openhab.binding.denonmarantz.internal.DenonMarantzStateChangedListener;
 import org.openhab.core.library.types.DecimalType;
 import org.openhab.core.library.types.OnOffType;
 import org.openhab.core.library.types.PercentType;
 import org.openhab.core.library.types.StringType;
+import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.types.State;
 
 /**
@@ -60,17 +65,28 @@ public class DenonMarantzState {
     private State zone4Input;
 
     private DenonMarantzStateChangedListener handler;
+    private final Map<ChannelUID, State> channelStates;
 
     public DenonMarantzState(DenonMarantzStateChangedListener handler) {
+
         this.handler = handler;
+        this.channelStates = new ConcurrentHashMap<>();
     }
 
     public void connectionError(String errorMessage) {
         handler.connectionError(errorMessage);
     }
 
-    public State getStateForChannelID(String channelID) {
-        switch (channelID) {
+    public State getStateForChannelID(ChannelUID channelUid) {
+
+        State state = channelStates.computeIfAbsent(channelUid,
+                id -> DenonMarantzStateFactory.getDefaultStateByName(channelUid.getId()));
+
+        if (null != state) {
+            return state;
+        }
+
+        switch (channelUid.getId()) {
             case DenonMarantzBindingConstants.CHANNEL_POWER:
                 return power;
             case DenonMarantzBindingConstants.CHANNEL_MAIN_ZONE_POWER:
@@ -129,6 +145,9 @@ public class DenonMarantzState {
             default:
                 return null;
         }
+    }
+
+    public void updateState(ChannelUID channelUID, State state) {
     }
 
     public void setPower(boolean power) {
@@ -203,6 +222,16 @@ public class DenonMarantzState {
         if (!newVal.equals(this.track)) {
             this.track = newVal;
             handler.stateChanged(DenonMarantzBindingConstants.CHANNEL_NOW_PLAYING_TRACK, this.track);
+        }
+    }
+
+    public void setZonePower(int zoneNumber, boolean power) {
+        OnOffType newVal = power ? OnOffType.ON : OnOffType.OFF;
+        if (newVal != this.zone2Power) {
+            this.zone2Power = newVal;
+            handler.stateChanged(
+                    DenonMarantzBindingConstants.GENERIC_ZONE_CHANNEL_POWER.replace("?", String.valueOf(zoneNumber)),
+                    this.zone2Power);
         }
     }
 

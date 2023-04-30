@@ -122,12 +122,13 @@ public class DenonMarantzDiscoveryParticipant implements MDNSDiscoveryParticipan
         return Optional.ofNullable(getThingUID(serviceInfo)).map(uid -> {
             Matcher matcher = DENON_MARANTZ_PATTERN.matcher(serviceInfo.getQualifiedName());
             matcher.matches();
+
             return DiscoveryResultBuilder.create(uid)
                     .withLabel(buildLabel(matcher, serviceInfo.getPropertyString("am")))
-                    .withProperty(PARAMETER_HOST, serviceInfo.getHostAddresses()[0])
                     .withProperty(Thing.PROPERTY_SERIAL_NUMBER, matcher.group(1).toLowerCase())
                     .withProperty(Thing.PROPERTY_VENDOR, getVendorByMacPrefix(matcher.group(1).trim()))
                     .withProperty(Thing.PROPERTY_MODEL_ID, serviceInfo.getPropertyString("am"))
+                    .withProperties(generateDefaultProperties(serviceInfo.getHostAddresses()[0]))
                     .withRepresentationProperty(Thing.PROPERTY_SERIAL_NUMBER).build();
         }).orElse(null);
     }
